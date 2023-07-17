@@ -11,7 +11,6 @@ ADD ./ /app
 
 # setup dependencies
 RUN npm install
-COPY . .
 
 # set NODE_ENV to 'development'
 ENV NODE_ENV development

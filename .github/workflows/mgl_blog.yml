@@ -1,0 +1,81 @@
+name: Meta4Cut Landing Page Deployment
+
+on:
+  push:
+    branches: [ myeonggyu ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Login to Amazon ECR
+      id: login
+      uses: docker/login-action@v1 
+      with:
+        registry: 666293202962.dkr.ecr.ap-northeast-2.amazonaws.com/mgl_blog
+        username: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    - name: Test ECR Login
+      run: |
+        if [ "${{ steps.login.outcome }}" == "success" ]; then
+          echo "ECR login succeeded"
+        else
+          echo "ECR login failed"
+          exit 1
+        fi
+
+    - name: Build and push
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        push: true
+        tags: 666293202962.dkr.ecr.ap-northeast-2.amazonaws.com/mgl_blog:latest
+    
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        envs: AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY
+
+        script: |
+          echo "환경변수 설정"
+          export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+          export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+          echo "AWS CLI, Docker 설치"
+          sudo apt-get update
+          if ! command -v aws &> /dev/null
+          then
+            sudo apt-get install -y awscli
+            export PATH=$PATH:/usr/local/bin/aws
+          fi
+          if ! command -v docker &> /dev/null
+          then
+            sudo apt-get install -y docker.io
+            sudo systemctl start docker
+            sudo systemctl enable docker
+          fi
+
+          echo "ECR 로그인 및 이미지 Pull"
+          echo $(aws ecr get-login-password --region ap-northeast-2) | sudo docker login --username AWS --password-stdin 666293202962.dkr.ecr.ap-northeast-2.amazonaws.com
+          sudo docker pull 666293202962.dkr.ecr.ap-northeast-2.amazonaws.com/mgl_blog:latest
+
+          echo "기존 작동중인 컨테이너 삭제"
+          CONTAINERS=$(sudo docker ps -q)
+          if [ ! -z "$CONTAINERS" ]; then
+            sudo docker stop $CONTAINERS
+            sudo docker rm $CONTAINERS
+          fi
+
+          echo "컨테이너 실행"
+          sudo docker run -d -p 80:3000 --env-file .env -v $(pwd)/home:/home:ro 666293202962.dkr.ecr.ap-northeast-2.amazonaws.com/mgl_blog:latest

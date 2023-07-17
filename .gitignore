@@ -129,7 +129,3 @@ dist
 .yarn/install-state.gz
 .pnp.*
 .DS_Store
-
-# artifacts
-uploads/
-.env

@@ -53,15 +53,26 @@ const App = () => {
         const res = await fetch('https://jsonplaceholder.typicode.com/posts')
             .then((response) => response.json())
 
-        const data = res.slice(0,100).map((it) => {
-            return {
-                id : it.id,
-                thumbnailUrl : imgReturn(),
-                body : it.body,
-                title: it.title,
-                date : dateFormat(new Date())
-            }
-        })
+        // const data = res.slice(0,100).map((it) => {
+        //     return {
+        //         id : it.id,
+        //         thumbnailUrl : imgReturn(),
+        //         body : it.body,
+        //         title: it.title,
+        //         date : dateFormat(new Date())
+        //     }
+        // })
+        const data = res.slice(0,100).reduce((acc, cur) => {
+            acc = acc ?? [];
+            acc.push({
+                        id : cur.id,
+                        thumbnailUrl : imgReturn(),
+                        body : cur.body,
+                        title: cur.title,
+                        date : dateFormat(new Date())
+            })
+            return acc
+        },[])
         setArticles(data)
     }
     const createArticles = async (title, content) => {

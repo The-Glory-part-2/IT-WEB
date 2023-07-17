@@ -1,4 +1,4 @@
-name: Meta4Cut Landing Page Deployment
+name: mgl_blog deployment
 
 on:
   push:

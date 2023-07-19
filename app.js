@@ -5,9 +5,14 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+var sequelize = require('./models/index.js').sequelize;
 var indexRouter = require('./routes/index');
+var articleRouter = require('./routes/article');
 
 var app = express();
+
+//mysql과 자동연결처리 및 모델기반 물리 테이블 생성처리제공
+sequelize.sync(); 
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -20,6 +25,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/article', articleRouter); // 게시글 관리 주소
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

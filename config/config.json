@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "root",
+    "password": "dlaudrb96",
+    "database": "mgl_blog_board",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": "dlaudrb96",
+    "database": "mgl_blog_board",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": "dlaudrb96",
+    "database": "mgl_blog_board",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}

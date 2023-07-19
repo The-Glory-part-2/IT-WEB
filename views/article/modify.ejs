@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>INSPINIA | Main view</title>
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <link href="/css/animate.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+
+    <!--추가 스타일-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!--좌측 메뉴 영역-->
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav metismenu" id="side-menu">
+                    <li class="nav-header">
+                        <div class="dropdown profile-element">
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                <span class="block m-t-xs font-bold">Example user</span>
+                                <span class="text-muted text-xs block">menu <b class="caret"></b></span>
+                            </a>
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <li><a class="dropdown-item" href="login.html">Logout</a></li>
+                            </ul>
+                        </div>
+                        <div class="logo-element">
+                            IN+
+                        </div>
+                    </li>
+                    <li class="active">
+                        <a href="login.html"><i class="fa fa-th-large"></i> <span class="nav-label">로그인</span></a>
+                    </li>
+                    <li>
+                        <a href="entry.html"><i class="fa fa-th-large"></i> <span class="nav-label">회원가입</span> </a>
+                    </li>
+                    <li>
+                        <a href="login.html"><i class="fa fa-th-large"></i> <span class="nav-label">게시글목록</span> </a>
+                    </li>
+                    <li>
+                        <a href="write.html"><i class="fa fa-th-large"></i> <span class="nav-label">게시글작성</span> </a>
+                    </li>
+                </ul>
+
+            </div>
+        </nav>
+
+        <!--우측 영역-->
+        <div id="page-wrapper" class="gray-bg">
+
+            <!--우측 상단 영역 -->
+            <div class="row border-bottom">
+                <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+                    <div class="navbar-header">
+                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i
+                                class="fa fa-bars"></i> </a>
+                        <form role="search" class="navbar-form-custom" method="post" action="#">
+                            <div class="form-group">
+                                <input type="text" placeholder="Search for something..." class="form-control"
+                                    name="top-search" id="top-search">
+                            </div>
+                        </form>
+                    </div>
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-sign-out"></i> Log out
+                            </a>
+                        </li>
+                    </ul>
+
+                </nav>
+            </div>
+
+            <!--우측 콘텐츠 헤더영역 -->
+            <div class="row wrapper border-bottom white-bg page-heading">
+                <div class="col-lg-10">
+                    <h2>게시글 확인 및 수정</h2>
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="/Home/Index">Home</a>>
+                        </li>
+                        <li>
+                            <a>게시글 확인 및 수정</a>>
+                        </li>
+                        <li class="active">
+                            <strong>수정</strong>
+                        </li>
+                    </ol>
+                </div>
+                <div class="col-lg-2">
+
+                </div>
+            </div>
+
+            <!--우측 콘텐츠 영역 -->
+            <div class="wrapper wrapper-content">
+            <form id="articleForm" action="/article/modify/<%=article.article_id%>" method="post">
+                <div class="ibox-content m-b-sm border-bottom">
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label">글 제목</label>
+                                <input type="text" id='title' name='title' value="<%=article.title%>" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label">글 내용</label>
+                                <!-- id는 jquery를 통한 유효성 검사를 위함이고, name은 데이터 전달을 위해 지정 -->
+                                <textarea class="form-control" id="contents" name="contents" rows="10" cols="5"><%=article.contents%></textarea> 
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label">게시여부</label>
+                                <select class="form-control" id="display_yn" name="display_yn">
+                                    <option value=1 <% if(article.is_display_code == 1){ %>selected<% } %>> 게시함</option>
+                                    <option value=0 <% if(article.is_display_code == 0){ %>selected<% } %>> 게시 안함</option>
+                                </select>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 등록/목록 버튼 영역 -->
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">저장</button>
+                        <a href="/article/list" class="btn btn-info">목록</a>
+                        <button type="button" id="btnDelete" class="btn btn-danger">삭제</button>
+                        
+                        <!-- article.js의 라우터 내부에서 req.body를 통해 form요소에서 데이터 추출하는 것처럼 name 추출 가능.  -->
+                        <input type="hidden" name='aid' id="aid" value="<%=article.article_id%>" /> 
+                    </div>
+
+                </div>
+            </form>
+            </div>
+
+            <!--우측 하단 풋터 영역-->
+            <div class="footer">
+                <div class="pull-right">
+                    10GB of <strong>250GB</strong> Free.
+                </div>
+                <div>
+                    <strong>Copyright</strong> Example Company &copy; 2014-2018
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Mainly scripts -->
+    <script src="/js/jquery-3.1.1.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="/js/inspinia.js"></script>
+    <script src="/js/plugins/pace/pace.min.js"></script>
+
+
+    <!--추가 스크립트-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script> // Jquery 스크립트 작성. 
+        // document는 사용자 PC RAM에 적재되어 있는 DOM를 의미 
+        // 서버에서 전달된 웹 페이지가 웹브라우저에 렌더링 완료되면 사용자 커서를 제목 영역으로 옮겨줌. 
+        $(document).ready(function(){
+            $('#title').focus();
+        });
+
+        // article form 태그에서 onsubmit 이벤트가 발생하면 캐치해 작동되는 함수 작성
+        // form 태그 내 각종 입력 요소들의 유효성 검사를 실시 후 action에 저장된 페이지로 데이터를 보내도록 하기 
+        // #는 태그 검색 prefix
+        $('#articleForm').submit(function(){
+            if($('#title').val() == ''){ // 제목 name 요소가 비어 있으면 
+                alert('제목을 입력해 주세요.');
+                $('#title').focus(); // 확인 버튼 눌렀을 때 해당 요소에 커서 옮겨놓기 
+                return false; // 서버로 안넘어가고 멈춤. 
+            }
+
+            return true;
+        });
+    </script>
+
+    <script>
+        //articleForm 폼태그에서 onsubmit이벤트가 발생하면 폼태그내 각종
+        //입력요소들의 유효성검사를 실시후 action에지정된 페이지로 데이터를 보낸다.
+        $("#articleForm").submit(function(){
+            if($("#title").val() == ""){
+                alert("제목을 입력해주세요.");
+                $("#title").focus();
+                return false;
+            }
+            return true;
+        });
+        //삭제버튼이 클릭되면 재확인 confirm창을 오픈하고
+        //확인이 눌리면 삭제 url주소를 호출한다.
+        $("#btnDelete").click(function(){
+            if(confirm('정말로 삭제하시겠습니까?')){
+                //confirm창에서 확인버튼을 클릭하면 true이 반환되어 if블럭 요기가 실행됨
+                location.href = "/article/delete?aid="+$("#aid").val();
+            }else{
+                //confirm창에서 취소버튼을 클릭하면 실행되는영역
+            }
+        });
+    </script>   
+
+</body>
+
+</html>

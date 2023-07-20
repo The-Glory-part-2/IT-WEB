@@ -5,14 +5,25 @@ import { useNavigate } from 'react-router-dom';
 const Article = ({ articles, updateArticles, deleteArticles }) => {
     const { id } = useParams();
     const [title, setTitle] = useState('');
+    const [author, setAuthor] = useState('');
+    const [name, setName] = useState('');
     const [content, setContent] = useState('');
     const navigate = useNavigate();
 
-    useEffect(() => {
-        let article = articles.find((it) => it.id === parseInt(id));
+    const dataGet = async () => {
+        const res = await fetch(`http://localhost:3001/posts/${id}`)
+            .then((response) => response.json())
+        const article = res.data
+        console.log(article)
+        setAuthor(article)
+        setName(article.author.name)
         setTitle(article.title);
-        setContent(article.body);
-    }, [articles, id]);
+        setContent(article.content);
+    }
+
+    useEffect(() => {
+        dataGet();
+    }, [id]);
 
     const handleTitleChange = (e) => {
         setTitle(e.target.value);
@@ -45,7 +56,13 @@ const Article = ({ articles, updateArticles, deleteArticles }) => {
 
     return (
         <div className="post-container">
-            <h1 className="post-title">글쓰기</h1>
+            <div style={{ textAlign: 'center' }}>
+                <h1 className="post-title">작성자 : {name}</h1>
+                <img className="container-img" src={author.thumbnailUrl} alt="My Image" />
+            </div>
+            <div style={{float: "right", margin: "10px"}}>
+                조회수: {author.viewCnt}
+            </div>
             <input
                 type="text"
                 value={title}
@@ -70,6 +87,7 @@ const Article = ({ articles, updateArticles, deleteArticles }) => {
                     저장
                 </button>
             </div>
+
         </div>
     );
 };

@@ -49,63 +49,84 @@ const App = () => {
         return date.getFullYear() + '.' + month + '.' + day + '.' + hour + ':' + minute;
     }
 
-    const getData = async () => {
-        const res = await fetch('https://jsonplaceholder.typicode.com/posts')
+    const dataGet = async () => {
+        const res = await fetch('http://localhost:3001/posts')
             .then((response) => response.json())
 
-        // const data = res.slice(0,100).map((it) => {
-        //     return {
-        //         id : it.id,
-        //         thumbnailUrl : imgReturn(),
-        //         body : it.body,
-        //         title: it.title,
-        //         date : dateFormat(new Date())
-        //     }
-        // })
-        const data = res.slice(0,100).reduce((acc, cur) => {
-            acc = acc ?? [];
-            acc.push({
-                        id : cur.id,
-                        thumbnailUrl : imgReturn(),
-                        body : cur.body,
-                        title: cur.title,
-                        date : dateFormat(new Date())
-            })
-            return acc
-        },[])
-        setArticles(data)
-    }
-    const createArticles = async (title, content) => {
-        const newItem ={
-            id: dataId.current,
-            thumbnailUrl : imgReturn(),
-            body : content,
-            title: title,
-            date : dateFormat(new Date())
-        }
-        await setArticles([newItem, ...articles]);
-        dataId.current += 1;
-    }
-    const updateArticles = async (title, content, id) => {
-        let article = articles.find((it) => it.id === parseInt(id));
-        const updateItem = {
-            id: parseInt(id),
-            thumbnailUrl : article.thumbnailUrl,
-            body : content,
-            title: title,
-            date : article.date
-        }
-        const newArticles = articles.filter((it) => it.id !== parseInt(id));
-        newArticles.unshift(updateItem)
-        setArticles(newArticles)
-    }
-    const deleteArticles = async (id) => {
-        const newArticles = articles.filter((it) => it.id !== parseInt(id));
-        setArticles(newArticles)
+        setArticles(res.data)
     }
 
+    // const getData = async () => {
+    //     const res = await fetch('https://jsonplaceholder.typicode.com/posts')
+    //         .then((response) => response.json())
+    //
+    //     // const data = res.slice(0,100).map((it) => {
+    //     //     return {
+    //     //         id : it.id,
+    //     //         thumbnailUrl : imgReturn(),
+    //     //         body : it.body,
+    //     //         title: it.title,
+    //     //         date : dateFormat(new Date())
+    //     //     }
+    //     // })
+    //     const data = res.slice(0,100).reduce((acc, cur) => {
+    //         acc = acc ?? [];
+    //         acc.push({
+    //                     id : cur.id,
+    //                     thumbnailUrl : imgReturn(),
+    //                     body : cur.body,
+    //                     title: cur.title,
+    //                     date : dateFormat(new Date())
+    //         })
+    //         return acc
+    //     },[])
+    //     // setArticles(data)
+    // }
+    const createArticles = async (title, content) => {
+        const users = await fetch('http://localhost:3001/users', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then((response) => response.json());
+        let randomUser = Math.floor(Math.random() * users.data.length) + 1
+
+        const response = await fetch('http://localhost:3001/posts', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ author : randomUser, title, content, thumbnailUrl : imgReturn() }),
+        });
+        dataGet();
+
+    }
+    const updateArticles = async (title, content, id) => {
+        const response = await fetch('http://localhost:3001/posts', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ "postId" : parseInt(id), title, content }),
+        });
+        dataGet();
+    }
+    const deleteArticles = async (id) => {
+        const response = await fetch('http://localhost:3001/posts', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ "postId" : parseInt(id) }),
+        });
+        dataGet();
+    }
+
+    // useEffect(() => {
+    //     getData();
+    // }, []);
     useEffect(() => {
-        getData();
+        dataGet();
     }, []);
   return (
     <div className="App">

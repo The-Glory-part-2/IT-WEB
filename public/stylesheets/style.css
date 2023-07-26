@@ -1,0 +1,213 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 40px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+}
+
+div.container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+h2 {
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 10px;
+}
+
+a {
+  text-decoration: none;
+  color: #333;
+}
+
+.postinfo {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  color: #888;
+}
+
+.postcontent {
+  font-size: 1.1rem;
+  border-top: 1px solid #ddd;
+  padding-top: 20px;
+  margin-top: 20px;
+  color: #222;
+}
+
+.post {
+  display: flex;
+  padding: 20px;
+  background-color: rgb(245, 245, 245);
+  border-bottom: 1px;
+  border-radius: 4px;
+  cursor: pointer; /* 추가: 마우스 커서가 변경되도록 설정 */
+}
+
+.post:hover {
+  background-color: rgb(237, 237, 237);
+  transition-duration: 0.2s;
+}
+
+.postcontainer {
+  padding: 32px;
+}
+
+form {
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 20px;
+}
+
+form.edit {
+  width: 100%;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 16px;
+  margin-top: 32px;
+}
+
+input,
+textarea {
+  width: 96%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  resize: vertical;
+}
+
+button {
+  display: inline-block;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button:hover {
+  background-color: #555;
+  transition-duration: 0.2s;
+}
+
+button[type="submit"] {
+  display: block;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button[type="submit"]:hover {
+  background-color: #555;
+  transition-duration: 0.2s;
+}
+
+
+button.back {
+  margin-bottom: 20px;
+  width: fit-content;
+
+}
+
+button.submit {
+  margin-top: 20px;
+  width: 100%;
+
+}
+
+a.button {
+  display: flex;
+  text-align: center;
+  background-color: #333;
+  color: #fff;
+  padding: 16px 24px;
+  text-decoration: none;
+  margin-top: 20px;
+  border-radius: 4px;
+  align-items: center;
+  justify-content: center;
+}
+
+a.button:hover {
+  background-color: #555;
+  transition-duration: 0.2s;
+}
+
+button.edit {
+  display: flex;
+  background-color: #7d7d7d;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+}
+
+button.edit:hover {
+  background-color: rgb(75, 75, 75)d7d;
+  transition-duration: 0.2s;
+}
+
+button.delete {
+  display: flex;
+  background-color: #c62323;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  margin-left: 10px;
+  border-radius: 4px;
+  width: fit-content;
+  text-align: center;
+  justify-content: center;
+}
+
+button.delete:hover {
+  background-color: #b01a1a;
+  transition-duration: 0.2s;
+}
+
+.title {
+  font-size: 1.1rem;
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  text-align: center;
+  align-items: center;
+}
+
+div.buttons {
+  display: flex;
+  height: 32px;
+  width: 120px;
+}

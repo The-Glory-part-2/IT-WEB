@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>블로그</title>
+    <link href="/stylesheets/style.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <h2>글 목록</h2>
+    <% if (isAuthenticated) { %>
+      
+      <a href="/logout" class="button">로그아웃</a>
+      <span><%= user.username %>님 환영합니다</span>
+    <% } else { %>
+      
+      <a href="/login" class="button">로그인</a>
+      <a href="/register" class="button">회원가입</a>
+    <% } %>
+
+    <ul>
+      <% posts.forEach(function (post) { %>
+        <li class="post">
+          <a class="title" href="/posts/detail/<%= post.post_id %>"><%= post.title %></a>
+          <div class="buttons">
+            <form class="edit" action="/posts/edit/<%= post.post_id %>" method="GET" style="display: inline;">
+              <button class="edit" type="submit">수정</button>
+            </form>
+            <button class="delete" onclick="deletePost(<%= post.post_id %>)">삭제</button>
+          </div>
+        </li>
+      <% }); %>
+    </ul>
+
+    <% if (isAuthenticated) { %>
+      <a href="/posts/create" class="button">글쓰기</a>
+    <% } else { %>
+      <span></span>
+      <% } %>
+    
+
+    <script>
+      function deletePost(postId) {
+        if (confirm('정말로 글을 삭제하시겠습니까?')) {
+          fetch(`/posts/delete/${postId}`, {
+            method: 'DELETE'
+          })
+          .then(response => {
+            if (response.ok) {
+              location.reload();
+            }
+          });
+        }
+      }
+
+      // 수정 버튼의 이벤트 핸들러
+      function handleEdit(postId) {
+        window.location.href = `/posts/edit/${postId}`;
+      }
+
+      // 상세 페이지로 이동하는 함수
+      function goToDetail(postId) {
+        window.location.href = `/posts/detail/${postId}`;
+      }
+
+      // 삭제 버튼의 이벤트 핸들러
+      function handleDelete(postId) {
+        if (confirm('정말로 글을 삭제하시겠습니까?')) {
+          fetch(`/posts/delete/${postId}`, {
+            method: 'DELETE'
+          })
+          .then(response => {
+            if (response.ok) {
+              location.reload();
+            }
+          });
+        }
+      }
+    </script>
+  </body>
+</html>

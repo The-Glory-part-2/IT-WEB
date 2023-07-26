@@ -1,0 +1,36 @@
+.logo-index { width: 250px; margin:0 auto 45px auto;  }
+.demo-grid { padding-right: 15px; padding-left: 15px; transition: all 0.2s ease-in-out; }
+.demo-grid:hover, .demo-grid:focus { transform: translateY(-5px); }
+.demo-grid img { box-shadow: 0 1rem 1.75rem 0 rgba(45, 55, 75, 0.1); margin-bottom: 30px; border: 0.0625rem solid rgba(220, 224, 229, 0.6); border-radius: 0.25rem; }
+.demo-grid h3{ text-align: center; font-weight: 600; font-size: 18px; margin-bottom: 0; } 
+
+.butn.style-two { background-color: #06df9e; border-color: transparent; font-weight: bold; }
+
+.intro-listing { margin:0 0 50px 0; padding: 0;  }
+.intro-listing li { display: inline-block; margin: 5px; }
+.intro-listing li a { font-weight: 500; text-transform: uppercase; background-color: transparent; color: #fff; font-size: 14px; padding: 5px 20px; line-height: 1.6; border: 1px solid rgba(255, 255, 255, 0.45); border-radius: 3px; }
+.intro-listing li a:hover { background-color: #fff; color: #232323; }
+.intro-listing li:last-child { margin-right: 0; }
+
+/* 상단영역 그라데이션 조절 */
+.main-banner:before{ content: ''; position: absolute; background: linear-gradient(to bottom, rgba(46, 46, 46, 0.85) 0%, transparent 75%); background-size:cover; height: 70%; width: 100%; top: 0; left: 0;}
+.bg-animate { background-repeat: repeat-x;  animation: animatedBackground 60s linear infinite reverse; }
+
+.page-title { line-height: 1.8; font-size: 18px; }
+
+blink { animation: blinker 0.9s linear infinite; color: #fff; background: red; padding:2px 16px; font-size: 14px; position: absolute;right: 15px; top: -12px; border-radius: 50rem; }
+
+blink.blue{ background: #2a8ae2; }
+
+@keyframes blinker {  
+    50% { opacity: 0; }
+}
+
+@keyframes animatedBackground {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: 100% 0;
+    }
+} 

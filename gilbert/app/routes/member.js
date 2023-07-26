@@ -5,6 +5,9 @@ const { route } = require('.');
 // express 객체의 Router() 메소드(기능)을 호출해서 사용자 요청과 응답을 처리할 라우터 객체를 생성
 var router = express.Router();
 
+var db = require('../models/index');
+var Op = db.Sequelize.Op;
+
 // 회원 가입 페이지 요청 라우팅 메소드 (비동기 방식)
 // 요청 방식: get 
 // 응답형식: 웹페이지 
@@ -28,7 +31,14 @@ router.post('/register', async(req, res, next) => {
     var email = req.body.email;
     var name = req.body.name;
     var password = req.body.password;
-    var confirmPassword = req.body.confirmPassword;
+    var telephone = req.body.telephone;
+
+    var member={
+        email:email
+    };
+
+    // 회원정보 신규 등록 
+    await db.Member.create(member);
 
     // 현재 DB에 저장은 모델을 통해 DB에 저장했다고 가정한다. 
 

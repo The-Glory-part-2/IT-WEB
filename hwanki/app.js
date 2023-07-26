@@ -1,44 +1,57 @@
-const nunjucks = require('nunjucks');
-const express = require('express');
-const cors = require('cors');
-const morgan = require('morgan'); // 디버깅
-const helmet = require('helmet'); // 보안
+var createError = require('http-errors');
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
+var cors = require('cors');
+var dotenv = require('dotenv');
 
-const categoryRouter = require('./routes/category.js');
+//env에서 config 정보 불러오기
+dotenv.config();
 
-const app = express();
-app.set('view engine','html');
+var mainRouter = require('./routes/main');
+var usersRouter = require('./routes/users');
+var postsRouter = require('./routes/posts');
 
-nunjucks.configure('template', {
-    autoescape: true,
-    express: app,
-    watch: true
-})
-// template를 인식하고 사용하겠다
-// autoescape는 보안상 true (false일 경우 html 태그 허용, DBD 공격 가능)
-// express : app, 사용할 객체 지정
-// watch: true 옵션을 사용하면 HTML파일이 변경될 때 템플릿 엔진 다시 렌더링
+var app = express();
 
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
+app.use(logger('dev'));
 app.use(express.json());
-app.use(helmet());
-app.use(morgan('tiny'));
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname + '/public'));
 
-app.use('/category', categoryRouter);
 
-app.get('/', (req, res) => {
-    res.render('index.html');
+app.use('/', mainRouter);
+app.use('/users', usersRouter);
+app.use('/posts', postsRouter);
+
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+    next(createError(404));
+  });
+  
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
 });
 
-app.use((req, res, next) => {
-    res.sendStatus(404);
-})
 
-app.use((err, req, res, next) => {
-    console.log('에러났음!')
-    console.log(err);
-    res.sendStatus(500);
-})
+// # Port
+app.listen(process.env.PORT, () => {
+  console.log(process.env.PORT, '번 포트 사용');
+});
 
-let PORT = 8080;
-
-app.listen(PORT, () => console.log(`local ${PORT}`))
+module.exports = app;

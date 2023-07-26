@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>글 목록</title>
+    <link href="/stylesheets/style.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <h1>글 목록</h1>
+    <ul>
+      <% posts.forEach(function (post) { %>
+        <li><%= post.title %></li>
+        <li><%= post.content %></li>
+      <% }); %>
+    </ul>
+  </body>
+</html>

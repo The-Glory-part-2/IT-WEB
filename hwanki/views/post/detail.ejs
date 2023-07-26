@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>글 상세</title>
+    <link href="/stylesheets/style.css" rel="stylesheet" type="text/css">
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+      }
+
+      h2 {
+        margin-top: 40px;
+        margin-bottom: 20px;
+      }
+
+      
+
+      button {
+        display: inline-block;
+        background-color: #333;
+        color: #fff;
+        border: none;
+        padding: 8px 16px;
+        cursor: pointer;
+        border-radius: 4px;
+      }
+
+      button:hover {
+        background-color: #555;
+      }
+
+      
+    </style>
+  </head>
+  <body>
+    <div class="postcontainer">
+      <button class="back" onclick="goBack()">뒤로가기</button>
+      <h2><%= post.title %></h2>
+      <p class="postinfo">작성일: <%= formattedCreatedAt %></p>
+      <p class="postinfo">조회수: <%= post.view_count %></p>
+      <p class="postcontent"><%= post.content %></p>
+    </div>
+
+    <script>
+      function goBack() {
+        window.history.back();
+      }
+    </script>
+  </body>
+</html>

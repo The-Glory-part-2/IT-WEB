@@ -1,0 +1,1 @@
+// models/main.js를 참고하여 post에 관련된 c, r, u, d sql 쿼리 작성

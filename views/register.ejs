@@ -71,7 +71,7 @@
 
                                         <div class="form-group">
                                             <label>ID (Email Address)*</label>
-                                            <input type="text" class="form-control" name="email" placeholder="아이디를 입력해 주세요.">
+                                            <input type="text" class="form-control" name="email" placeholder="아이디(E-mail)를 입력해 주세요." required>
                                         </div>
 
                                     </div>
@@ -82,7 +82,7 @@
 
                                         <div class="form-group">
                                             <label>Password*</label>
-                                            <input type="password" class="form-control" name="password" placeholder="비밀번호를 입력해 주세요.">
+                                            <input type="password" class="form-control" name="password" placeholder="비밀번호를 입력해 주세요." required>
                                         </div>
 
                                     </div>
@@ -93,7 +93,7 @@
 
                                         <div class="form-group">
                                             <label>Confirm Password*</label>
-                                            <input type="password" class="form-control" name="password" placeholder="비밀번호를 다시 입력해 주세요.">
+                                            <input type="password" class="form-control" name="confirmPassword" placeholder="비밀번호를 다시 입력해 주세요." required>
                                         </div>
 
                                     </div>
@@ -104,7 +104,7 @@
                                 <div class="row mt-2">
                                     <div class="col-12">
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="terms-condition">
+                                            <input type="checkbox" class="custom-control-input" id="terms-condition" required>
                                             <label class="custom-control-label display-30" for="terms-condition"><a href="/privacy_policy">개인정보 처리 방침</a>에 동의합니다.</label>
                                         </div>
                                     </div>
@@ -169,6 +169,43 @@
     <script src="/js/index.js"></script>
 
     <!-- all js include end -->
+
+    <script>
+        document.querySelector('form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            var email = document.querySelector('input[name="email"]').value;
+            var password = document.querySelector('input[name="password"]').value;
+            var confirmPassword = document.querySelector('input[name="confirmPassword"]').value;
+            var termsCheckbox = document.querySelector('input[id="terms-condition"]').checked;
+    
+            var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            var passwordPattern = /^(?=.*[a-z])(?=.*[!@#$%^&*]).{6,}$/;
+    
+            if (!emailPattern.test(email)) {
+                alert('이메일 주소 형식이 올바르지 않습니다.');
+                return false;
+            }
+    
+            if (!passwordPattern.test(password)) {
+                alert('비밀번호는 6자 이상의 영문 소문자와 특수기호를 포함해야 합니다.');
+                return false;
+            }
+    
+            if (password !== confirmPassword) {
+                alert('비밀번호가 일치하지 않습니다.');
+                return false;
+            }
+    
+            if (!termsCheckbox) {
+                alert('개인정보 처리 방침에 동의해야 합니다.');
+                return false;
+            }
+    
+            alert('회원가입이 완료되었습니다.');
+            this.submit();
+        });
+    </script>
 
 </body>
 

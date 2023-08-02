@@ -1,0 +1,112 @@
+
+<section class="section">
+  <div class="container">
+    <div class="row blog-entries element-animate">
+      <div class="col-md-12 col-lg-12 main-content">
+
+
+          <div class="comment-form-wrap pt-5">
+            <h3 class="mb-5">Modify Your Post!</h3>
+
+            <form action="/blog/mod/<%=v.postInfo.POST_ID%>" method="post" class="p-5 bg-light">
+
+              <div class="form-group">
+                <label>Category *</label>
+                <select type="text" class="form-control" name="category_id"  id="category_id">
+                  <%
+                  for(var i =0; i< v.categoryList.length; i++ )
+                      {%>
+                          <option value ="<%=v.categoryList[i].CATEGORY_ID %>" 
+                              <% if(v.postInfo.CATEGORY_ID == v.categoryList[i].CATEGORY_ID) {%> selected <%} %> >
+                          <%= v.categoryList[i].CATEGORY_NAME %>
+                          </option>
+                          
+                      <%}                    
+                  %>
+                </select>
+              </div>
+    
+              <div class="form-group">
+                <label>Title *</label>
+                <input type="text" class="form-control" name="title" id="title" value="<%=v.postInfo.TITLE%>">
+              </div>
+
+              <div class="form-group">
+                <label>Contents *</label>
+                <textarea name="contents" id="contents" cols="30" rows="10" class="summernote"> <%=v.postInfo.CONTENTS%> </textarea>
+              </div>
+
+              <div class="form-group">
+                <label>Hash tag</label>
+                <input type="text" class="form-control" name="hash_tag" id="hash_tag" value="<%=v.postInfo.HASH_TAG%>">
+              </div>
+
+              <div class="form-group">
+                <input type="submit" value="Post" class="btn btn-primary">
+              </div>
+              
+            </form>
+          </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  $(document).ready(function () {
+    
+     $('.summernote').summernote({
+             height: 300,
+             minHeight: 250,
+             maxHeight: 500,
+             focus: false,
+             lang: 'ko-KR',
+             placeholder:'내용을 작성해주세요.',
+             toolbar: [
+                 ['style', ['style']],
+                 ['font', ['fontsize','bold', 'underline', 'clear']],
+                 ['height', ['height']],
+                 ['color', ['color']],
+                 ['table', ['table']],
+                 ['para', ['ul', 'ol', 'paragraph']],
+                 ['insert', ['picture','link','video']],
+                 ['view', ['codeview', 'help']]
+             ],
+             callbacks: {
+             onImageUpload: function(files) {
+                 console.log("editor file attached.....");
+                 imageUpload(files[0], this);
+             }
+         }
+      })
+    });
+
+
+     //SummerNote 에디터 이미지 파일 업로드처리함수
+     function imageUpload(file, editor) {
+            var fd = new FormData();
+            fd.append('file', file);
+            
+   
+            $.ajax({
+                type:"POST",
+                url:"/smapi",
+                data:fd,
+                processData:false,
+                contentType:false,
+                success: function(response) {
+                    console.log("파일업로드 결과:",response);
+                    $(editor).summernote('insertImage', response.data.filePath);
+                },
+                error : function(err) {
+                    console.log(err);
+                }
+            });
+        };
+
+</script>
+
+
+
+

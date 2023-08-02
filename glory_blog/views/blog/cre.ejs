@@ -1,0 +1,124 @@
+
+<section class="section">
+  <div class="container">
+    <div class="row blog-entries element-animate">
+      <div class="col-md-12 col-lg-12 main-content">
+          <div class="comment-form-wrap pt-5">
+            <h3 class="mb-5">Creating Your Post!</h3>
+
+            <form action="/blog/cre"  method="post" class="p-5 bg-light">
+
+              <div class="form-group">
+                <label>Category *</label>
+                <select type="text" class="form-control" name="category_id"  id="category_id">
+                  <%
+                    for (var i = 0; i < v.categoryList.length; i++) 
+                    {%>
+                      <option value="<%= v.categoryList[i].CATEGORY_ID %>"><%= v.categoryList[i].CATEGORY_NAME %></option>
+                    <%}
+                  %>           
+                </select>
+              </div>
+    
+              <div class="form-group">
+                <label>Title *</label>
+                <input type="text" class="form-control" name="title" id="title">
+              </div>
+
+              <div class="form-group">
+                <label>Contents *</label>
+                <textarea name="contents" id="contents" cols="30" rows="10" class="summernote"></textarea>
+              </div>
+
+              <div class="form-group">
+                <label>Hash tag</label>
+                <input type="text" class="form-control" name="hash_tag" id="hash_tag">
+              </div>
+
+
+              <div class="form-group">
+                <input type="submit" value="Post" class="btn btn-primary">
+              </div>
+            </form>
+
+          </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  //문서가 준비되면 실행되는 함수
+  $(document).ready(function () {
+    
+    //.summernote 클래스를 가진 요소를 서머노트 에디터로 초기화합니다.
+     $('.summernote').summernote({
+             height: 300, //에디터의 높이 설정
+             minHeight: 250, //최소 높이 설정
+             maxHeight: 500, //최대 높이 설정
+             focus: false, //초기화시 포커스 여부
+             lang: 'ko-KR', //에디터 언어설정(한국어)
+             placeholder:'내용을 작성해주세요.', //내용입력전 보여줄 플레이스 홀더 설정
+             toolbar: [ //에디터 상단의 툴바 설정
+                 ['style', ['style']],
+                 ['font', ['fontsize','bold', 'underline', 'clear']],
+                 ['height', ['height']],
+                 ['color', ['color']],
+                 ['table', ['table']],
+                 ['para', ['ul', 'ol', 'paragraph']],
+                 ['insert', ['picture','link','video']],
+                 ['view', ['codeview', 'help']]
+             ],
+             callbacks: {
+              //이미지 업로드 시 onImageUpload라는 서머노트(Summernote) 라이브러리에서 제공하는 콜백(callback) 함수 설정
+              //files는 이미지 업로드시 선택된 파일들의 배열
+             onImageUpload: function(files) {
+                 //아래 정의한imageUpload 함수 호출하여 이미지 업로드 처리
+                 //files[0] 이미지 업로드시 한번에 하나의 파일만 업로드 하므로 0번째 배열인 첫번째 파일을 처리
+                 //this는 현재 서머노트 에디터를 가르킨다.
+                 imageUpload(files[0], this);
+             }
+         }
+      })
+    });
+
+
+     //SummerNote 에디터 이미지 파일 업로드처리함수
+     function imageUpload(file, editor) {
+            //FormData 객체는 HTML 폼(form) 데이터를 동적으로 생성할 수 있는 객체입니다. 
+            //이 객체를 사용하면 이미지 파일과 같은 파일 형식의 데이터를 서버로 전송하기가 용이해집니다.
+            var fd = new FormData();
+            //fd.append('file', file) 코드에서는 FormData 객체에 file 변수에 들어있는 이미지 파일을 추가합니다. 
+            //file 변수에 들어있는 파일은 onImageUpload 콜백 함수에서 사용자가 서머노트 에디터에 업로드한 이미지 파일입니다.
+            fd.append('file', file);
+   
+            //$.ajax()를 사용하여 실제 이미지 업로드를 서버로 전송하고, 
+            //서버에서 반환된 이미지 경로를 이용하여 에디터에 이미지를 삽입하게 됩니다.
+            $.ajax({
+                type:"POST", // POST 방식으로 서버에 데이터 전송
+                url:"/smapi", // 이미지 업로드를 처리하는 서버 API URL을 입력합니다.
+                data:fd, // FormData 객체를 전송 데이터로 사용
+                processData:false,
+                contentType:false,
+                success: function(response) {
+                    console.log("파일업로드 결과:",response);
+                    // 서버에서 반환한 이미지 경로를 이용하여 이미지를 삽입합니다.
+                    // 서버 응답 데이터의 'response.data.filePath'에 이미지 경로가 들어있음
+                    // 서머노트 에디터의 'insertImage' 메서드를 사용하여 이미지를 삽입합니다.
+                    $(editor).summernote('insertImage', response.data.filePath);
+                },
+                error : function(err) {
+                    console.log(err);
+                }
+            });
+        };
+
+</script>
+
+
+
+
+
+
+
+
